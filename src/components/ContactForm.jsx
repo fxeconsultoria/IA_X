@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input.jsx'
 import { Textarea } from '@/components/ui/textarea.jsx'
 import { Label } from '@/components/ui/label.jsx'
 import { Mail, Phone, User, MessageSquare } from 'lucide-react'
-import emailjs from '@emailjs/browser'; // Importar EmailJS
+// import emailjs from '@emailjs/browser'; // Removido: Não é mais necessário, pois estamos usando o Google Apps Script
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -29,12 +29,29 @@ export function ContactForm() {
     setIsSubmitting(true)
     setSubmitStatus(null) // Reset status on new submission
     
+    // URL do seu script do Google Apps fornecida
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxoyrCkMcmjUGHRL-Fvq46n2hpAUl6tx5sWGTB-jcNsLNp7-Q-ip2gIDpdzZdP0kyFTjA/exec';
+
+    // Converte os dados do formulário para o formato URL-encoded
+    // Isso é necessário para que o Google Apps Script possa ler os parâmetros corretamente
+    const formDataEncoded = new URLSearchParams(formData ).toString();
+
     try {
-      // Substitua 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID' e 'YOUR_PUBLIC_KEY' pelos seus dados do EmailJS
-      await emailjs.send('service_ia_x', 'template_ia_x', formData, 'YOUR_PUBLIC_KEY');
+      // Envia os dados para o script do Google Apps
+      // Usamos 'no-cors' porque o script do Google Apps geralmente não envia cabeçalhos CORS
+      // que permitiriam ler a resposta diretamente no cliente.
+      // A suposição é que se a requisição não falhar na rede, ela foi enviada com sucesso.
+      await fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors', // Importante para evitar erros de CORS em requisições cross-origin
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded', // Define o tipo de conteúdo do corpo da requisição
+        },
+        body: formDataEncoded, // O corpo da requisição com os dados do formulário
+      });
       
       setSubmitStatus('success')
-      setFormData({ name: '', email: '', phone: '', message: '' })
+      setFormData({ name: '', email: '', phone: '', message: '' }) // Limpa o formulário após o envio
     } catch (error) {
       console.error('Erro ao enviar e-mail:', error);
       setSubmitStatus('error')
