@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input.jsx'
 import { Textarea } from '@/components/ui/textarea.jsx'
 import { Label } from '@/components/ui/label.jsx'
 import { Mail, Phone, User, MessageSquare } from 'lucide-react'
+import emailjs from '@emailjs/browser'; // Importar EmailJS
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -26,17 +27,16 @@ export function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitStatus(null) // Reset status on new submission
     
     try {
-      // Simular envio do formulário
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Aqui você pode integrar com um serviço de email como EmailJS ou uma API backend
-      console.log('Dados do formulário:', formData)
+      // Substitua 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID' e 'YOUR_PUBLIC_KEY' pelos seus dados do EmailJS
+      await emailjs.send('service_ia_x', 'template_ia_x', formData, 'YOUR_PUBLIC_KEY');
       
       setSubmitStatus('success')
       setFormData({ name: '', email: '', phone: '', message: '' })
     } catch (error) {
+      console.error('Erro ao enviar e-mail:', error);
       setSubmitStatus('error')
     } finally {
       setIsSubmitting(false)
