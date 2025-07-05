@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
@@ -15,7 +16,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleWhatsAppClick = () => {
-    const phoneNumber = '5585988642727'; // Número de telefone com código do país e DDD
+    const phoneNumber = '55859925756556'; // Número de telefone com código do país e DDD
     const message = encodeURIComponent('Quero transformar minha gestão com IA');
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
   };
@@ -203,33 +204,39 @@ function App() {
               {
                 title: "Curso de Formação de Gestores",
                 description: "Capacitação completa em IA para líderes empresariais",
-                color: "from-blue-500 to-blue-600"
+                color: "from-blue-500 to-blue-600",
+                link: "#"
               },
               {
                 title: "Pack Implantação Comercial", 
                 description: "Soluções de IA focadas em vendas e relacionamento",
-                color: "from-green-500 to-green-600"
+                color: "from-green-500 to-green-600",
+                link: "#"
               },
               {
-                title: "Pack Implantação Financeira",
-                description: "Automação e análise financeira com IA",
-                color: "from-purple-500 to-purple-600"
+                title: "Sistema de Delivery com IA",
+                description: "Implantação de atendimento automatizado via WhatsApp para restaurantes",
+                color: "from-purple-500 to-purple-600",
+                link: "/delivery-ia"
               },
               {
                 title: "Consultoria Personalizada",
                 description: "Atendimento especializado para suas necessidades",
-                color: "from-orange-500 to-orange-600"
+                color: "from-orange-500 to-orange-600",
+                link: "#"
               }
             ].map((product, index) => (
-              <Card key={index} className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <CardHeader>
-                  <div className={`w-12 h-12 bg-gradient-to-r ${product.color} rounded-lg mb-4`}></div>
+              <Link to={product.link} key={index}>
+                <Card className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 h-full">
+                  <CardHeader>
+                    <div className={`w-12 h-12 bg-gradient-to-r ${product.color} rounded-lg mb-4`}></div>
                   <CardTitle className="text-xl">{product.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">{product.description}</CardDescription>
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base">{product.description}</CardDescription>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -299,7 +306,7 @@ function App() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <Phone className="h-5 w-5 text-blue-400" />
-                  <span>+55 (85) 98864-2727 WhatsApp disponível</span>
+                  <span>+55 (85) 99257-5655 WhatsApp disponível</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="h-5 w-5 text-blue-400" />
@@ -318,14 +325,14 @@ function App() {
               <h3 className="text-2xl font-bold mb-6">Nossos Produtos</h3>
               <div className="space-y-3">
                 {[
-                  "Curso de Formação de Gestores",
-                  "Pack Implantação Comercial", 
-                  "Pack Implantação Financeira",
-                  "Consultoria Personalizada"
+                  { name: "Curso de Formação de Gestores", link: "#" },
+                  { name: "Pack Implantação Comercial", link: "#" },
+                  { name: "Sistema de Delivery com IA", link: "/delivery-ia" },
+                  { name: "Consultoria Personalizada", link: "#" }
                 ].map((product, index) => (
-                  <a key={index} href="#" className="block text-blue-400 hover:text-blue-300 transition-colors">
-                    {product}
-                  </a>
+                  <Link key={index} to={product.link} className="block text-blue-400 hover:text-blue-300 transition-colors">
+                    {product.name}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -339,7 +346,7 @@ function App() {
 
       {/* Floating WhatsApp Button */}
       <a 
-        href="https://wa.me/5585988642727" 
+        href="https://wa.me/55859925756556" 
         className="whatsapp-button" 
         target="_blank" 
         rel="noopener noreferrer"
@@ -351,5 +358,4 @@ function App() {
 }
 
 export default App
-
 
